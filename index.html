@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carlos Barcelo | Interactive Designer</title>
+    <meta
+      name="description"
+      content="Interactive designer building playful systems across screens and spaces: games, alt controllers, and themed experiences."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top">Carlos Barcelo</a>
+      <nav class="site-nav">
+        <a href="#work">Featured Work</a>
+        <a href="#projects">Project Index</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" data-reveal>
+        <div class="hero__grid">
+          <div class="hero__copy">
+            <p class="eyebrow">Interactive Designer</p>
+            <h1>Designing playful systems across screens and spaces.</h1>
+            <p class="hero__lead">
+              I build games and themed experiences that blend hardware,
+              software, and spatial storytelling.
+            </p>
+            <div class="hero__meta">
+              <span>USC CS Games</span>
+              <span>Connected Devices and Making</span>
+            </div>
+            <div class="cta-group">
+              <a
+                class="button button--primary"
+                href="https://www.linkedin.com/in/carlos-barcelo-ab6166216/"
+                >Lets Connect!</a
+              >
+              <a
+                class="button button--ghost"
+                href="mailto:itsmecarlosbarcelo@gmail.com"
+                >itsmecarlosbarcelo@gmail.com</a
+              >
+            </div>
+          </div>
+          <div class="hero__portrait">
+            <div class="media media--portrait media--filled">
+              <img
+                src="assets/headshot.jpg"
+                alt="Carlos Barcelo headshot"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- <section class="highlights" data-reveal>
+        <div class="section-header">
+          <p class="eyebrow">Highlights</p>
+          <h2>Recognized for ambitious, interactive builds.</h2>
+        </div>
+        <ul class="pill-list">
+          <li>GDC Alt Ctrl finalist</li>
+          <li>IGF nomination</li>
+          <li>GDC 2025 recognition</li>
+          <li>Raspberry Pi feature</li>
+          <li>Lead designer on 20+ person team</li>
+          <li>OpenSauce 2024 exhibitor</li>
+        </ul>
+      </section> -->
+
+      <section class="featured" id="work">
+        <div class="section-header" data-reveal>
+          <p class="eyebrow">Featured Work</p>
+        </div>
+
+        <article class="project project--featured" id="shower" data-reveal>
+          <div class="project__media">
+            <div class="media media--filled">
+              <img
+                src="Assets/Shower.gif"
+                alt="The Shower Must Go On shower controller demo"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="project__content">
+            <h3>The Shower Must Go On</h3>
+            <p class="project__summary">
+              An alt-controller game that turns a full-size shower into a
+              playable interface. Built end-to-end with custom electronics and
+              Unreal C++. Patent Pending.
+            </p>
+            <div class="project__meta">
+              <span>Role: Solo developer</span>
+              <span>Disciplines: Physical build, electronics, Unreal C++</span>
+              <span>Recognition: GDC Alt Ctrl finalist, IGF nomination</span>
+            </div>
+            <div class="project__links">
+              <a
+                class="link is-placeholder"
+                href="https://www.youtube.com/watch?v=JYmKChDD128"
+                >Trailer</a
+              >
+            </div>
+            <div class="project__press">
+              <span class="project__press-label">Featured in</span>
+              <div class="press-logos">
+                <a
+                  class="press-logo"
+                  href="https://www.tiktok.com/@ign/video/7484457514810051883?q=GDC%20shower%20game&t=1768523193490"
+                  aria-label="IGN feature"
+                >
+                  <img
+                    src="assets/logos/ign.svg"
+                    alt="IGN"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">IGN</span>
+                </a>
+                <a
+                  class="press-logo"
+                  href="https://www.tiktok.com/@nbcbayarea/video/7485538999776562478?q=cnet%20GDC%20shower%20game&t=1768523059447"
+                  aria-label="CBS feature"
+                >
+                  <img
+                    src="assets/logos/cbs.svg"
+                    alt="CBS"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">CBS</span>
+                </a>
+                <a
+                  class="press-logo"
+                  href="https://www.tiktok.com/@ign/video/7484457514810051883?q=cnet%20GDC%20shower%20game&t=1768523015387"
+                  aria-label="CNET feature"
+                >
+                  <img
+                    src="assets/logos/cnet.svg"
+                    alt="CNET"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">CNET</span>
+                </a>
+                <a
+                  class="press-logo"
+                  href="https://www.tiktok.com/@ign/video/7484457514810051883?q=cnet%20GDC%20shower%20game&t=1768523015387"
+                  aria-label="PC Gamer feature"
+                >
+                  <img
+                    src="assets/logos/pc-gamer.svg"
+                    alt="PC Gamer"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">PC Gamer</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="project project--featured project--reverse"
+          id="duoq"
+          data-reveal
+        >
+          <div class="project__media">
+            <div class="media media--filled">
+              <img src="Assets/DuoQ.gif" alt="DuoQ Trailer" loading="lazy" />
+            </div>
+          </div>
+          <div class="project__content">
+            <h3>DuoQ</h3>
+            <p class="project__summary">
+              Senior capstone with a 20+ person team. I was one of the principal
+              designers on an AI companion game, shaping abilities, levels, and
+              puzzles.
+            </p>
+            <div class="project__meta">
+              <span>Role: Designer</span>
+              <span
+                >Focus: Ability prototyping, level design, documentation</span
+              >
+              <span>Team: 20+ students across disciplines</span>
+            </div>
+            <div class="project__links">
+              <a
+                class="link is-placeholder"
+                href="https://store.steampowered.com/app/3677620/DuoQ/"
+                >Steam page</a
+              >
+            </div>
+          </div>
+        </article>
+
+        <article class="project project--featured" id="connect4" data-reveal>
+          <div class="project__media">
+            <div class="media media--filled">
+              <img
+                src="Assets/Connect4.gif"
+                alt="Connect 4 Clock demo"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="project__content">
+            <h3>Connect 4 Clock</h3>
+            <p class="project__summary">
+              A mechanical and electrical build that transforms Connect 4 into a
+              functional clock. Built in a four-week sprint and showcased at
+              OpenSauce and Makerfaire OC. Patent Pending.
+            </p>
+            <div class="project__meta">
+              <span>Role: Designer + engineer</span>
+              <span>Disciplines: Mechanical, electrical, embedded systems</span>
+              <span>Recognition: Raspberry Pi feature</span>
+            </div>
+            <div class="project__press">
+              <span class="project__press-label">Featured in</span>
+              <div class="press-logos">
+                <a
+                  class="press-logo press-logo--large"
+                  href="https://x.com/Raspberry_Pi/status/1825910032153636867"
+                  aria-label="Raspberry Pi feature"
+                >
+                  <img
+                    src="assets/logos/raspberry-pi.svg"
+                    alt="Raspberry Pi"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">Raspberry Pi</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="project-index" id="projects">
+        <div class="section-header" data-reveal>
+          <p class="eyebrow">Project Index</p>
+          <div
+            class="filter-bar"
+            role="group"
+            aria-label="Sort projects by tag"
+          >
+            <button
+              class="filter-button is-active"
+              type="button"
+              data-tag-filter="all"
+            >
+              All
+            </button>
+            <button
+              class="filter-button"
+              type="button"
+              data-tag-filter="design"
+            >
+              Design
+            </button>
+            <button
+              class="filter-button"
+              type="button"
+              data-tag-filter="programming"
+            >
+              Programming
+            </button>
+            <button
+              class="filter-button"
+              type="button"
+              data-tag-filter="themed-entertainment"
+            >
+              Themed Entertainment
+            </button>
+          </div>
+        </div>
+        <div class="card-grid">
+          <article
+            class="card"
+            data-reveal
+            data-delay="1"
+            data-tags="design,programming"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/BearANDGoop.gif"
+                  alt="Bear and Goop game demo"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Bear and Goop</h3>
+            <p>Local co-op game. Sole engineer, Unity C# gameplay systems.</p>
+            <ul class="tag-list">
+              <li class="tag">Design</li>
+              <li class="tag">Programming</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://www.youtube.com/watch?v=AVjuzYMcRSs"
+                >Trailer</a
+              >
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="2"
+            data-tags="programming"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/NetworkedUnreal_1.gif"
+                  alt="Unreal 5 networked game demo"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Networked UE5 Game</h3>
+            <p>
+              Utilizing UE 5, this FPS can connect to other clients. Players can
+              chat and leave in-game tags that are saved as level metadata.
+              Timed grenades can blow both players up.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Programming</li>
+            </ul>
+            <div class="card__links">
+              <a class="link is-placeholder" href="#"></a>
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="3"
+            data-tags="programming"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/itp380.gif"
+                  alt="SDL classic game remakes demo"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Classic Game Remakes</h3>
+            <p>Weekly C++/SDL builds recreating classic arcade mechanics.</p>
+            <ul class="tag-list">
+              <li class="tag">Programming</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://github.com/itp380-20241/labs-carlosbarcelo"
+                >Code</a
+              >
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="4"
+            data-tags="design,themed-entertainment"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/TrojanHorse.png"
+                  alt="Trojan Horse Poster"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Trojan Horse</h3>
+            <p>
+              Creative Director for a 15-person team building a USC-themed
+              experience.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Design</li>
+              <li class="tag">Themed Entertainment</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://docs.google.com/document/d/1auY5ZQzxneqTClsms-hb041zkN0Da1Z9sB5J6AEzG6g/edit?usp=sharing"
+                >Game Master Guide</a
+              >
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="5"
+            data-tags="themed-entertainment"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/LightShow.gif"
+                  alt="Light show demo"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>DMX Light Shows</h3>
+            <p>
+              Built Multiple IoT light shows for clients around my neighborrhood
+              using microcontrollers and custom choreography.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Themed Entertainment</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://youtu.be/2s-GpkQUhEQ?si=-9p8OqofVD_DB87S"
+                >Video</a
+              >
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="6"
+            data-tags="programming"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/RayTrace.gif"
+                  alt="Raytracer demo"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Custom Rayracer</h3>
+            <p>
+              Raytracer built with OpenGL for realistic rendering effects.
+              Contains multiple light sources, recursive reflections and
+              anti-aliasing.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Programming</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://github.com/carlosbarcelo1203/raytracer"
+                >Code</a
+              >
+            </div>
+          </article>
+
+          <article
+            class="card"
+            data-reveal
+            data-delay="7"
+            data-tags="design,themed-entertainment"
+          >
+            <div class="project__media">
+              <div class="media media--filled">
+                <img
+                  src="Assets/Antigua.jpg"
+                  alt="Mysteries of Antigua scavenger hunt"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <h3>Mysteries of Antigua</h3>
+            <p>
+              Designed puzzles for an outdoor scavenger hunt/escape room in
+              Antigua, Guatemala. One of many escape rooms I consulted for as an
+              intern with Fantasy Escape Games.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Design</li>
+              <li class="tag">Themed Entertainment</li>
+            </ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://www.overtheplanet.com/en-US/unique-experiences-with-mysteries-of-antigua-interactive-treasure-hunt.a890878?utm_source=gttd&utm_medium=organic&s=maps&f=nav&option_id=tg1&currency=USD"
+                >Tickets</a
+              >
+            </div>
+          </article>
+
+          <article class="card" data-reveal data-delay="8" data-tags="">
+            <div class="media media--filled">
+              <img
+                src="Assets/TikTok.webp"
+                alt="TikTok Creator"
+                loading="lazy"
+              />
+            </div>
+            <h3>TikTok Creator</h3>
+            <p>
+              150k followers for edited videos. VFX and audience growth
+              practice.
+            </p>
+            <ul class="tag-list"></ul>
+            <div class="card__links">
+              <a
+                class="link is-placeholder"
+                href="https://www.tiktok.com/@hamalahq"
+                >Channel</a
+              >
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about" id="about" data-reveal>
+        <div class="section-header">
+          <p class="eyebrow">About</p>
+          <h2>Interactive designer with a builder mindset.</h2>
+        </div>
+        <div class="about__content">
+          <p>
+            I am a USC Computer Science Games alumnus focused on interactive
+            systems that blend physical computing and gameplay. I lead teams,
+            prototype rapidly, and sweat the details that make experiences feel
+            alive.
+          </p>
+          <div class="about__links">
+            <a
+              class="button button--ghost"
+              href="Assets/Carlos Barcelo Resume.pdf"
+              >Resume (PDF)</a
+            >
+            <a
+              class="button button--ghost"
+              href="https://www.linkedin.com/in/carlos-barcelo-ab6166216/"
+              >LinkedIn</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" data-reveal>
+        <div class="section-header">
+          <p class="eyebrow">Contact</p>
+          <h2>Lets build something interactive.</h2>
+        </div>
+        <div class="contact__actions">
+          <a
+            class="button button--primary"
+            href="mailto:itsmecarlosbarcelo@gmail.com"
+            >itsmecarlosbarcelo@gmail.com</a
+          >
+          <span class="contact__phone">(562) 719-1792</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Designed and built by Carlos Barcelo.</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
