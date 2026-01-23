@@ -213,12 +213,26 @@
               >
               <span>Team: 20+ students across disciplines</span>
             </div>
-            <div class="project__links">
-              <a
-                class="link is-placeholder"
-                href="https://store.steampowered.com/app/3677620/DuoQ/"
-                >Steam page</a
-              >
+            <div class="project__press">
+              <span class="project__press-label">Featured in</span>
+              <div class="press-logos">
+                <a
+                  class="press-logo"
+                  href="https://store.steampowered.com/app/3677620/DuoQ/"
+                  aria-label="Raspberry Pi feature"
+                >
+                  <img
+                    src="Assets/Logos/steam.png"
+                    alt="Steam"
+                    loading="lazy"
+                    onerror="
+                      this.parentElement.classList.add('press-logo--fallback');
+                      this.remove();
+                    "
+                  />
+                  <span class="press-logo__fallback">Raspberry Pi</span>
+                </a>
+              </div>
             </div>
           </div>
         </article>
@@ -414,8 +428,8 @@
             </div>
             <h3>Trojan Horse</h3>
             <p>
-              Creative Director for a 15-person team building a USC-themed
-              experience.
+              Creative Director for a 15-person team developing a USC-themed
+              escape room experience experience.
             </p>
             <ul class="tag-list">
               <li class="tag">Design</li>
