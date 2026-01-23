@@ -1,6 +1,12 @@
 const revealItems = document.querySelectorAll("[data-reveal]");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const externalLinks = document.querySelectorAll('a[href^="http"]');
+externalLinks.forEach((link) => {
+  link.setAttribute("target", "_blank");
+  link.setAttribute("rel", "noopener noreferrer");
+});
+
 if (prefersReducedMotion) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 } else {
