@@ -7,6 +7,62 @@ externalLinks.forEach((link) => {
   link.setAttribute("rel", "noopener noreferrer");
 });
 
+const trackEvent = (name, data = {}) => {
+  if (window.umami && typeof window.umami.track === "function") {
+    window.umami.track(name, data);
+  }
+};
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) {
+    return;
+  }
+
+  const href = link.getAttribute("href") || "";
+  if (href.startsWith("#")) {
+    return;
+  }
+
+  const linkText = (link.textContent || "").trim().slice(0, 80);
+  const hrefLower = href.toLowerCase();
+  trackEvent("link_click", { href, text: linkText });
+
+  if (hrefLower.endsWith(".pdf") && /resume/i.test(`${href} ${linkText}`)) {
+    trackEvent("resume_open", { href });
+  }
+});
+
+const scrollMilestones = [25, 50, 75, 100];
+const reachedMilestones = new Set();
+let scrollTicking = false;
+
+const reportScrollDepth = () => {
+  const doc = document.documentElement;
+  const scrollable = doc.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? (doc.scrollTop / scrollable) * 100 : 100;
+
+  scrollMilestones.forEach((milestone) => {
+    if (progress >= milestone && !reachedMilestones.has(milestone)) {
+      reachedMilestones.add(milestone);
+      trackEvent("scroll_depth", { percent: milestone });
+    }
+  });
+};
+
+window.addEventListener("scroll", () => {
+  if (scrollTicking) {
+    return;
+  }
+  scrollTicking = true;
+  window.requestAnimationFrame(() => {
+    reportScrollDepth();
+    scrollTicking = false;
+  });
+});
+
+window.addEventListener("load", reportScrollDepth);
+
 if (prefersReducedMotion) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 } else {
