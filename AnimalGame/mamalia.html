@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mammalia</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <p id="mode-indicator" class="mode-indicator" aria-live="polite">
+        Daily Challenge
+      </p>
+      <header class="topbar">
+        <div class="topbar-controls">
+          <label class="audio-toggle" for="audio-questions-toggle">
+            <input id="audio-questions-toggle" type="checkbox" checked />
+            <span>Allow audio questions</span>
+          </label>
+          <div class="scoreboard" aria-live="polite">
+            <div class="score-tile current-score-tile">
+              <span class="score-label">Score</span>
+              <span id="streak-value" class="score-value current-score-value"
+                >0</span
+              >
+            </div>
+            <div class="score-tile">
+              <span class="score-label">Daily Score</span>
+              <span id="daily-score-value" class="score-value">-</span>
+            </div>
+            <div class="score-tile">
+              <span class="score-label">Personal Best</span>
+              <span id="best-value" class="score-value">0</span>
+            </div>
+          </div>
+          <div
+            id="lives-display"
+            class="lives"
+            aria-live="polite"
+            aria-label="3 lives remaining"
+          >
+            <span class="life-heart" aria-hidden="true">&#10084;</span>
+            <span class="life-heart" aria-hidden="true">&#10084;</span>
+            <span class="life-heart" aria-hidden="true">&#10084;</span>
+          </div>
+        </div>
+      </header>
+
+      <p id="loading-message" class="loading-message">
+        Loading animal database...
+      </p>
+      <p id="error-message" class="error-message hidden"></p>
+
+      <section id="game-area" class="game-area hidden">
+        <h2 id="prompt" class="prompt"></h2>
+        <p id="criterion-description" class="criterion-description"></p>
+
+        <div class="arena" id="arena">
+          <article
+            class="animal-card"
+            data-side="left"
+            role="button"
+            tabindex="0"
+            aria-label="Choose left animal"
+          >
+            <div class="image-frame">
+              <img class="animal-image" data-role="image" alt="" />
+              <div class="image-fallback hidden" data-role="fallback">
+                No image
+              </div>
+              <div
+                class="life-loss-indicator hidden"
+                data-role="life-loss"
+                aria-hidden="true"
+              >
+                &#128148;
+              </div>
+              <p class="animal-value hidden" data-role="value"></p>
+            </div>
+            <div class="card-body">
+              <h3 class="animal-name" data-role="name"></h3>
+              <p class="animal-scientific" data-role="scientific"></p>
+              <button
+                type="button"
+                class="learn-more-button hidden"
+                data-role="learn"
+              >
+                Learn More
+              </button>
+            </div>
+          </article>
+
+          <div class="center-controls">
+            <button
+              id="sound-button"
+              type="button"
+              class="sound-button hidden"
+              aria-label="Play sound clip"
+              title="Play sound"
+            >
+              Play
+            </button>
+            <div class="versus">VS</div>
+          </div>
+          <div
+            id="daily-menu"
+            class="daily-menu hidden"
+            role="dialog"
+            aria-modal="false"
+            aria-label="Game menu"
+          >
+            <p id="daily-menu-title" class="daily-menu-title">Choose Mode</p>
+            <div class="daily-menu-actions">
+              <button
+                id="menu-primary-button"
+                type="button"
+                class="daily-menu-button daily-menu-primary"
+              >
+                Start Daily Challenge
+              </button>
+              <button
+                id="menu-secondary-button"
+                type="button"
+                class="daily-menu-button daily-menu-secondary"
+              >
+                Play Unlimited
+              </button>
+              <button
+                id="menu-tertiary-button"
+                type="button"
+                class="daily-menu-button daily-menu-secondary hidden"
+              >
+                Play Daily Challenge Again
+              </button>
+            </div>
+          </div>
+
+          <article
+            class="animal-card"
+            data-side="right"
+            role="button"
+            tabindex="0"
+            aria-label="Choose right animal"
+          >
+            <div class="image-frame">
+              <img class="animal-image" data-role="image" alt="" />
+              <div class="image-fallback hidden" data-role="fallback">
+                No image
+              </div>
+              <div
+                class="life-loss-indicator hidden"
+                data-role="life-loss"
+                aria-hidden="true"
+              >
+                &#128148;
+              </div>
+              <p class="animal-value hidden" data-role="value"></p>
+            </div>
+            <div class="card-body">
+              <h3 class="animal-name" data-role="name"></h3>
+              <p class="animal-scientific" data-role="scientific"></p>
+              <button
+                type="button"
+                class="learn-more-button hidden"
+                data-role="learn"
+              >
+                Learn More
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
