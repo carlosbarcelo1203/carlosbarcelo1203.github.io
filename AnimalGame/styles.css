@@ -980,7 +980,7 @@ h1 {
   }
 
   .image-frame {
-    height: clamp(215px, 14vh, 350px);
+    height: clamp(150px, 14vh, 250px);
   }
 
   .animal-image {
