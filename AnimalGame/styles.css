@@ -974,13 +974,13 @@ h1 {
   }
 
   .animal-card {
-    width: min(100%, 18.4rem);
+    width: min(100%, 17rem);
     min-height: 0;
     border-radius: 12px;
   }
 
   .image-frame {
-    height: clamp(95px, 14vh, 150px);
+    height: clamp(82px, 12vh, 110px);
   }
 
   .animal-image {
