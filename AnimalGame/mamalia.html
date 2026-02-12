@@ -17,20 +17,12 @@
             <input id="audio-questions-toggle" type="checkbox" checked />
             <span>Allow audio questions</span>
           </label>
-          <div class="scoreboard" aria-live="polite">
+          <div class="scoreboard scoreboard-primary" aria-live="polite">
             <div class="score-tile current-score-tile">
               <span class="score-label">Score</span>
               <span id="streak-value" class="score-value current-score-value"
                 >0</span
               >
-            </div>
-            <div class="score-tile">
-              <span class="score-label">Daily Score</span>
-              <span id="daily-score-value" class="score-value">-</span>
-            </div>
-            <div class="score-tile">
-              <span class="score-label">Personal Best</span>
-              <span id="best-value" class="score-value">0</span>
             </div>
           </div>
           <div
@@ -45,6 +37,19 @@
           </div>
         </div>
       </header>
+
+      <div class="meta-scorebar">
+        <div class="scoreboard scoreboard-secondary" aria-live="polite">
+          <div class="score-tile">
+            <span class="score-label">Daily Score</span>
+            <span id="daily-score-value" class="score-value">-</span>
+          </div>
+          <div class="score-tile">
+            <span class="score-label">Personal Best</span>
+            <span id="best-value" class="score-value">0</span>
+          </div>
+        </div>
+      </div>
 
       <p id="loading-message" class="loading-message">
         Loading animal database...

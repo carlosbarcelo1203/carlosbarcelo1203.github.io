@@ -145,6 +145,20 @@ h1 {
   margin-left: auto;
 }
 
+.scoreboard-primary {
+  grid-template-columns: minmax(84px, 1fr);
+}
+
+.meta-scorebar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.65rem;
+}
+
+.scoreboard-secondary {
+  margin-left: 0;
+}
+
 .current-score-tile {
   position: fixed;
   left: 50%;
@@ -808,6 +822,10 @@ h1 {
     flex-wrap: wrap;
   }
 
+  .meta-scorebar {
+    margin-bottom: 0.5rem;
+  }
+
   .arena {
     grid-template-columns: 1fr;
   }
@@ -868,13 +886,16 @@ h1 {
     height: 0.74rem;
   }
 
-  .scoreboard {
+  .meta-scorebar {
+    margin: 0;
+  }
+
+  .scoreboard-secondary {
     position: fixed;
-    top: 0.3rem;
     right: 0.32rem;
-    z-index: 34;
-    margin-left: 0;
-    gap: 0.22rem;
+    bottom: max(0.34rem, env(safe-area-inset-bottom));
+    z-index: 23;
+    gap: 0.18rem;
     grid-template-columns: 1fr;
   }
 
@@ -891,17 +912,17 @@ h1 {
     min-width: 56px;
   }
 
-  .scoreboard .score-tile:not(.current-score-tile) {
+  .scoreboard-secondary .score-tile {
     padding: 0.22rem 0.32rem;
     min-width: 56px;
   }
 
-  .scoreboard .score-tile:not(.current-score-tile) .score-label {
+  .scoreboard-secondary .score-label {
     font-size: 0.48rem;
     margin-bottom: 0.02rem;
   }
 
-  .scoreboard .score-tile:not(.current-score-tile) .score-value {
+  .scoreboard-secondary .score-value {
     font-size: 0.74rem;
   }
 
