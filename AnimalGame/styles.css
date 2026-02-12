@@ -892,10 +892,12 @@ h1 {
 
   .scoreboard-secondary {
     position: fixed;
-    right: 0.32rem;
-    bottom: max(0.34rem, env(safe-area-inset-bottom));
+    right: 0.18rem;
+    top: 0.18rem;
+    bottom: auto;
     z-index: 23;
-    gap: 0.18rem;
+    gap: 0.06rem;
+    justify-items: end;
     grid-template-columns: 1fr;
   }
 
@@ -912,18 +914,23 @@ h1 {
     min-width: 56px;
   }
 
-  .scoreboard-secondary .score-tile {
-    padding: 0.22rem 0.32rem;
-    min-width: 56px;
+  .scoreboard-secondary .score-tile:not(.current-score-tile) {
+    border-radius: 5px;
+    padding: 0.08rem 0.14rem;
+    min-width: 34px;
+    box-shadow: none;
   }
 
-  .scoreboard-secondary .score-label {
-    font-size: 0.48rem;
-    margin-bottom: 0.02rem;
+  .scoreboard-secondary .score-tile:not(.current-score-tile) .score-label {
+    font-size: 0.46rem;
+    margin-bottom: 0.01rem;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
 
-  .scoreboard-secondary .score-value {
-    font-size: 0.74rem;
+  .scoreboard-secondary .score-tile:not(.current-score-tile) .score-value {
+    font-size: 0.72rem;
+    line-height: 1;
   }
 
   .score-label {
@@ -956,7 +963,7 @@ h1 {
   }
 
   .prompt {
-    font-size: clamp(1.25rem, 6vw, 1.8rem);
+    font-size: clamp(1.34rem, 6.4vw, 1.95rem);
     line-height: 1.08;
   }
 
@@ -967,7 +974,7 @@ h1 {
 
   .criterion-description {
     margin: -0.02rem 0 0.03rem;
-    font-size: 0.62rem;
+    font-size: 0.7rem;
   }
 
   .arena {
@@ -1014,16 +1021,16 @@ h1 {
   }
 
   .animal-name {
-    font-size: clamp(0.88rem, 3.4vw, 1rem);
+    font-size: clamp(0.95rem, 3.8vw, 1.1rem);
   }
 
   .animal-scientific {
-    font-size: 0.62rem;
+    font-size: 0.68rem;
   }
 
   .learn-more-button {
-    padding: 0.26rem 0.48rem;
-    font-size: 0.58rem;
+    padding: 0.29rem 0.54rem;
+    font-size: 0.62rem;
   }
 
   .animal-value {
@@ -1048,7 +1055,7 @@ h1 {
   .status-message {
     min-height: 1em;
     margin-top: 0;
-    font-size: 0.66rem;
+    font-size: 0.74rem;
   }
 
   .restart-button {
