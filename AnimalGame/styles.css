@@ -830,95 +830,108 @@ h1 {
 }
 
 @media (max-width: 900px) and (max-aspect-ratio: 3/4) {
+  body {
+    overflow: hidden;
+  }
+
   .app {
-    padding: 3.05rem 0.62rem 1.2rem;
+    height: 100dvh;
+    padding: 2.55rem 0.5rem 0.45rem;
   }
 
   .topbar {
-    gap: 0.55rem;
-    margin-bottom: 0.75rem;
+    gap: 0.34rem;
+    margin-bottom: 0.3rem;
   }
 
   .topbar-controls {
-    gap: 0.45rem;
-    justify-content: space-between;
-    align-items: flex-start;
+    width: 100%;
+    gap: 0.24rem;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   .audio-toggle {
-    padding: 0.28rem 0.52rem;
-    font-size: 0.68rem;
+    padding: 0.24rem 0.46rem;
+    font-size: 0.62rem;
   }
 
   .mode-indicator {
-    top: 0.1rem;
-    left: 0.72rem;
-    font-size: 0.6rem;
-    padding: 0.2rem 0.42rem;
+    top: 0.08rem;
+    left: 0.55rem;
+    font-size: 0.56rem;
+    padding: 0.17rem 0.34rem;
   }
 
   .audio-toggle input {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 0.74rem;
+    height: 0.74rem;
   }
 
   .scoreboard {
-    gap: 0.5rem;
-    grid-template-columns: repeat(2, minmax(64px, 1fr));
+    position: fixed;
+    top: 0.3rem;
+    right: 0.32rem;
+    z-index: 34;
+    margin-left: 0;
+    gap: 0.22rem;
+    grid-template-columns: 1fr;
   }
 
   .current-score-tile {
-    top: 2.35rem;
-    min-width: 104px;
+    top: 1.95rem;
+    min-width: 88px;
+    padding: 0.2rem 0.42rem;
+    border-radius: 10px;
   }
 
   .score-tile {
-    border-radius: 11px;
-    padding: 0.4rem 0.55rem;
-    min-width: 66px;
+    border-radius: 8px;
+    padding: 0.24rem 0.34rem;
+    min-width: 56px;
   }
 
   .scoreboard .score-tile:not(.current-score-tile) {
-    padding: 0.3rem 0.44rem;
-    min-width: 58px;
+    padding: 0.22rem 0.32rem;
+    min-width: 56px;
   }
 
   .scoreboard .score-tile:not(.current-score-tile) .score-label {
-    font-size: 0.56rem;
-    margin-bottom: 0.04rem;
+    font-size: 0.48rem;
+    margin-bottom: 0.02rem;
   }
 
   .scoreboard .score-tile:not(.current-score-tile) .score-value {
-    font-size: 0.92rem;
+    font-size: 0.74rem;
   }
 
   .score-label {
-    font-size: 0.62rem;
-    margin-bottom: 0.05rem;
+    font-size: 0.5rem;
+    margin-bottom: 0.03rem;
   }
 
   .score-value {
-    font-size: 1.05rem;
+    font-size: 0.8rem;
   }
 
   .current-score-value {
-    font-size: 1.28rem;
+    font-size: 1.02rem;
   }
 
   .lives {
-    top: 0.42rem;
-    gap: 0.16rem;
-    padding: 0.2rem 0.45rem;
-    min-height: 1.65rem;
-    min-width: 5.9rem;
+    top: 0.3rem;
+    gap: 0.12rem;
+    padding: 0.16rem 0.34rem;
+    min-height: 1.34rem;
+    min-width: 4.85rem;
   }
 
   .life-heart {
-    font-size: 1.08rem;
+    font-size: 0.88rem;
   }
 
   .game-area {
-    gap: 0.65rem;
+    gap: 0.42rem;
   }
 
   .prompt {
@@ -932,102 +945,108 @@ h1 {
   }
 
   .criterion-description {
-    margin: -0.05rem 0 0.05rem;
-    font-size: 0.7rem;
+    margin: -0.02rem 0 0.03rem;
+    font-size: 0.62rem;
   }
 
   .arena {
-    gap: 0.55rem;
+    gap: 0.3rem;
+    justify-items: center;
   }
 
   .center-controls {
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
 
   .sound-button {
-    width: 62px;
-    height: 62px;
-    font-size: 0.78rem;
+    width: 48px;
+    height: 48px;
+    font-size: 0.64rem;
   }
 
   .versus {
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
     margin: 0;
-    font-size: 0.78rem;
+    font-size: 0.6rem;
     border-width: 1px;
   }
 
   .animal-card {
+    width: min(100%, 18.4rem);
     min-height: 0;
-    border-radius: 14px;
+    border-radius: 12px;
   }
 
   .image-frame {
-    height: clamp(125px, 23vh, 190px);
+    height: clamp(215px, 14vh, 350px);
+  }
+
+  .animal-image {
+    object-fit: cover;
   }
 
   .card-body {
-    gap: 0.25rem;
-    padding: 0.62rem 0.72rem 0.76rem;
+    gap: 0.1rem;
+    padding: 0.38rem 0.5rem 0.44rem;
   }
 
   .animal-name {
-    font-size: clamp(1rem, 4.2vw, 1.24rem);
+    font-size: clamp(0.88rem, 3.4vw, 1rem);
   }
 
   .animal-scientific {
-    font-size: 0.76rem;
-  }
-
-  .learn-more-button {
-    padding: 0.38rem 0.7rem;
-    font-size: 0.72rem;
-  }
-
-  .animal-value {
-    width: calc(100% - 1.3rem);
-    border-radius: 10px;
-    padding: 0.48rem 0.55rem;
-    gap: 0.12rem;
-  }
-
-  .animal-value-label {
     font-size: 0.62rem;
   }
 
+  .learn-more-button {
+    padding: 0.26rem 0.48rem;
+    font-size: 0.58rem;
+  }
+
+  .animal-value {
+    width: calc(100% - 0.9rem);
+    border-radius: 7px;
+    padding: 0.28rem 0.34rem;
+    gap: 0.08rem;
+  }
+
+  .animal-value-label {
+    font-size: 0.48rem;
+  }
+
   .animal-value-number {
-    font-size: clamp(1.15rem, 8vw, 2rem);
+    font-size: clamp(0.9rem, 6vw, 1.35rem);
   }
 
   .life-loss-indicator {
-    font-size: clamp(2rem, 13vw, 3.5rem);
+    font-size: clamp(1.45rem, 10vw, 2.35rem);
   }
 
   .status-message {
-    min-height: 1.2em;
+    min-height: 1em;
     margin-top: 0;
-    font-size: 0.86rem;
+    font-size: 0.66rem;
   }
 
   .restart-button {
-    font-size: 1.2rem;
-    padding: 1.35rem 1.2rem;
+    font-size: 0.9rem;
+    padding: 0.72rem 0.64rem;
   }
 
   .daily-menu {
-    min-width: min(94vw, 330px);
-    padding: 0.78rem;
+    min-width: min(94vw, 290px);
+    padding: 0.6rem;
   }
 
   .daily-menu-title {
-    font-size: 0.84rem;
-    margin-bottom: 0.58rem;
+    font-size: 0.74rem;
+    margin-bottom: 0.44rem;
   }
 
   .daily-menu-button {
-    font-size: 0.78rem;
-    padding: 0.54rem 0.7rem;
+    font-size: 0.68rem;
+    padding: 0.44rem 0.58rem;
   }
 }
