@@ -33,6 +33,11 @@
     REPLAY_DAILY: "replay_daily",
     SHARE_DAILY: "share_daily"
   });
+  const UMAMI_EVENTS = Object.freeze({
+    ROUND_END_DAILY: "round_end_daily",
+    ROUND_END_UNLIMITED: "round_end_unlimited",
+    SHARE: "share_daily_result"
+  });
 
   const CONSERVATION_LEVELS = {
     "least concern": 1,
@@ -228,6 +233,19 @@
     wireEvents();
     loadPersistentState();
     loadAnimals();
+  }
+
+  function trackUmamiEvent(eventName, payload) {
+    if (!window.umami || typeof window.umami.track !== "function" || !eventName) {
+      return;
+    }
+
+    if (payload && typeof payload === "object") {
+      window.umami.track(eventName, payload);
+      return;
+    }
+
+    window.umami.track(eventName);
   }
 
   function initAudioPlayer() {
@@ -803,6 +821,10 @@
     if (navigator.share) {
       try {
         await navigator.share(sharePayload);
+        trackUmamiEvent(UMAMI_EVENTS.SHARE, {
+          score: state.streak,
+          method: "native"
+        });
         return;
       } catch (error) {
         if (error && error.name === "AbortError") {
@@ -815,12 +837,20 @@
       try {
         await navigator.clipboard.writeText(shareMessage);
         setShareMenuButtonFeedback("Copied!");
+        trackUmamiEvent(UMAMI_EVENTS.SHARE, {
+          score: state.streak,
+          method: "clipboard"
+        });
         return;
       } catch (error) {
       }
     }
 
     window.prompt("Copy your daily result:", shareMessage);
+    trackUmamiEvent(UMAMI_EVENTS.SHARE, {
+      score: state.streak,
+      method: "prompt"
+    });
   }
 
   function hideMenu() {
@@ -842,6 +872,8 @@
   }
 
   function showPostGameMenu() {
+    trackRoundEndEvent();
+
     if (isDailyMode()) {
       if (!state.dailyRunIsReplay) {
         recordDailyScoreOnceForDate(state.dailySeedKey, state.streak);
@@ -853,6 +885,20 @@
       return;
     }
     showMenu(MENU_CONTEXTS.UNLIMITED_COMPLETE);
+  }
+
+  function trackRoundEndEvent() {
+    const payload = {
+      score: state.streak
+    };
+
+    if (isDailyMode()) {
+      payload.isReplay = state.dailyRunIsReplay;
+      trackUmamiEvent(UMAMI_EVENTS.ROUND_END_DAILY, payload);
+      return;
+    }
+
+    trackUmamiEvent(UMAMI_EVENTS.ROUND_END_UNLIMITED, payload);
   }
 
   function gameRandom() {
