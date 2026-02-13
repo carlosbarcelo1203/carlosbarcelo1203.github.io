@@ -59,18 +59,10 @@ body::before {
 }
 
 .app::after {
-  content: "";
-  position: absolute;
-  inset: 0.35rem;
-  border: 2px solid transparent;
-  border-radius: 22px;
-  pointer-events: none;
-  transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
+  content: none;
 }
 
-.app.app-daily-mode::after {
+.app.app-daily-mode .game-area {
   border-color: rgba(223, 177, 66, 0.95);
   box-shadow:
     0 0 0 1px rgba(253, 227, 153, 0.42),
@@ -78,7 +70,7 @@ body::before {
     inset 0 0 28px rgba(223, 177, 66, 0.1);
 }
 
-.app.app-unlimited-mode::after {
+.app.app-unlimited-mode .game-area {
   border-color: rgba(206, 235, 221, 0.24);
   box-shadow: 0 0 0 1px rgba(206, 235, 221, 0.08);
 }
@@ -102,9 +94,9 @@ body::before {
 
 .mode-indicator {
   position: absolute;
-  top: 0.32rem;
-  left: 1.8rem;
-  z-index: 35;
+  top: -0.72rem;
+  left: 0.92rem;
+  z-index: 6;
   margin: 0;
   width: fit-content;
   border-radius: 999px;
@@ -293,9 +285,16 @@ h1 {
 }
 
 .game-area {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border: 2px solid transparent;
+  border-radius: 22px;
+  padding: 1rem 0.95rem 0.9rem;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 .prompt {
@@ -800,14 +799,9 @@ h1 {
     padding: 3.5rem 0.85rem 2.3rem;
   }
 
-  .app::after {
-    inset: 0.2rem;
-    border-radius: 18px;
-  }
-
   .mode-indicator {
-    top: 0.16rem;
-    left: 1rem;
+    top: -0.62rem;
+    left: 0.78rem;
   }
 
   .topbar {
@@ -854,19 +848,25 @@ h1 {
 
   .app {
     height: 100dvh;
-    padding: 2.55rem 0.5rem 0.45rem;
+    padding: 0.45rem 0.5rem;
   }
 
   .topbar {
-    gap: 0.34rem;
-    margin-bottom: 0.3rem;
+    position: absolute;
+    top: 0.18rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    z-index: 28;
+    gap: 0;
+    margin: 0;
   }
 
   .topbar-controls {
-    width: 100%;
+    width: auto;
     gap: 0.24rem;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: nowrap;
   }
 
   .audio-toggle {
@@ -875,10 +875,10 @@ h1 {
   }
 
   .mode-indicator {
-    top: 0.08rem;
-    left: 0.55rem;
+    top: -0.54rem;
+    left: 0.62rem;
     font-size: 0.56rem;
-    padding: 0.17rem 0.34rem;
+    padding: 0.15rem 0.3rem;
   }
 
   .audio-toggle input {
@@ -887,7 +887,10 @@ h1 {
   }
 
   .meta-scorebar {
+    position: absolute;
+    inset: 0;
     margin: 0;
+    pointer-events: none;
   }
 
   .scoreboard-secondary {
@@ -899,6 +902,16 @@ h1 {
     gap: 0.06rem;
     justify-items: end;
     grid-template-columns: 1fr;
+    pointer-events: auto;
+  }
+
+  #game-area:not(.hidden) {
+    position: absolute;
+    inset: 2.65rem 0.5rem 0.45rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.42rem;
   }
 
   .current-score-tile {
@@ -1008,11 +1021,11 @@ h1 {
   }
 
   .image-frame {
-    height: clamp(82px, 12vh, 110px);
+    height: clamp(150px, 15vh, 250px);
   }
 
   .animal-image {
-    object-fit: cover;
+    object-fit: scale-down;
   }
 
   .card-body {

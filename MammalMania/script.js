@@ -11,6 +11,8 @@
   const FLEX_COUNTUP_FORMAT_KEYS = new Set(["pageviews_30d", "max_speed_mph"]);
   const AUDIO_CRITERION_KEY = "sound_url";
   const AUDIO_PRIORITY_USAGE_MULTIPLIER = 0.7;
+  const PACIFIC_TIME_ZONE = "America/Los_Angeles";
+  const DAILY_RESET_HOUR_PT = 12;
   const STORAGE_KEY = "animal_game_progress_v1";
   const GAME_MODES = Object.freeze({
     DAILY: "daily",
@@ -415,7 +417,7 @@
 
   function configureRandomSourceForCurrentMode() {
     if (isDailyMode()) {
-      state.dailySeedKey = getCurrentUtcDateKey();
+      state.dailySeedKey = getCurrentDailySeedKey();
       state.seededRandomSource = createSeededRandomSource(state.dailySeedKey);
       return;
     }
@@ -496,12 +498,12 @@
   }
 
   function hasPlayedDailyChallengeToday() {
-    const todayKey = getCurrentUtcDateKey();
+    const todayKey = getCurrentDailySeedKey();
     return hasDailyScoreForDate(todayKey);
   }
 
   function getTodayDailyScore() {
-    const todayKey = getCurrentUtcDateKey();
+    const todayKey = getCurrentDailySeedKey();
     if (!hasDailyScoreForDate(todayKey)) {
       return null;
     }
@@ -534,12 +536,51 @@
     savePersistentState();
   }
 
-  function getCurrentUtcDateKey() {
+  function getCurrentDailySeedKey() {
     const now = new Date();
-    const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(now.getUTCDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    const pacificNow = getDatePartsInPacific(now);
+    const shouldUsePreviousPacificDate = pacificNow.hour < DAILY_RESET_HOUR_PT;
+
+    if (!shouldUsePreviousPacificDate) {
+      return buildDateKey(pacificNow.year, pacificNow.month, pacificNow.day);
+    }
+
+    const utcDateForPacificDay = new Date(Date.UTC(pacificNow.year, pacificNow.month - 1, pacificNow.day));
+    utcDateForPacificDay.setUTCDate(utcDateForPacificDay.getUTCDate() - 1);
+
+    return buildDateKey(
+      utcDateForPacificDay.getUTCFullYear(),
+      utcDateForPacificDay.getUTCMonth() + 1,
+      utcDateForPacificDay.getUTCDate()
+    );
+  }
+
+  function getDatePartsInPacific(date) {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: PACIFIC_TIME_ZONE,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      hourCycle: "h23",
+      hour12: false
+    });
+    const parts = formatter.formatToParts(date);
+    const getPart = (type) => {
+      const part = parts.find((entry) => entry.type === type);
+      return part ? part.value : "";
+    };
+
+    return {
+      year: Number(getPart("year")),
+      month: Number(getPart("month")),
+      day: Number(getPart("day")),
+      hour: Number(getPart("hour"))
+    };
+  }
+
+  function buildDateKey(year, month, day) {
+    return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   }
 
   function updateModeIndicator() {
@@ -554,7 +595,7 @@
 
     if (isDailyMode()) {
       ui.modeIndicator.textContent = "Daily Challenge";
-      ui.modeIndicator.title = `Seeded by ${state.dailySeedKey} UTC`;
+      ui.modeIndicator.title = `Seeded by ${state.dailySeedKey} (resets 12:00 PM PT)`;
       ui.modeIndicator.classList.remove("mode-indicator-unlimited");
       ui.modeIndicator.classList.add("mode-indicator-daily");
       return;
