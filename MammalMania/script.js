@@ -782,10 +782,10 @@
     const baseMessage = `On today's daily challenge, I got a streak of ${state.streak}, and I lost to ${lostToAnimal}.`;
 
     if (!emojiGrid) {
-      return `${baseMessage}\n\n${pageUrl}`;
+      return `${baseMessage}`;
     }
 
-    return `${baseMessage}\n\n${emojiGrid}\n\n${pageUrl}`;
+    return `${baseMessage}\n\n${emojiGrid}`;
   }
 
   function buildDailyShareEmojiGrid() {
