@@ -15,7 +15,7 @@
   const DAILY_SHARE_FALLBACK_EMOJI = "\u2B1C";
   const DAILY_SHARE_GRID_COLUMNS = 8;
   const PACIFIC_TIME_ZONE = "America/Los_Angeles";
-  const DAILY_RESET_HOUR_PT = 12;
+  const DAILY_RESET_HOUR_PT = 0;
   const STORAGE_KEY = "animal_game_progress_v1";
   const GAME_MODES = Object.freeze({
     DAILY: "daily",
@@ -618,7 +618,7 @@
 
     if (isDailyMode()) {
       ui.modeIndicator.textContent = "Daily Challenge";
-      ui.modeIndicator.title = `Seeded by ${state.dailySeedKey} (resets 12:00 PM PT)`;
+      ui.modeIndicator.title = `Seeded by ${state.dailySeedKey} (resets 12:00 AM PT)`;
       ui.modeIndicator.classList.remove("mode-indicator-unlimited");
       ui.modeIndicator.classList.add("mode-indicator-daily");
       return;
@@ -2291,6 +2291,7 @@
     ui.errorMessage.classList.remove("hidden");
   }
 })();
+
 
 
 
