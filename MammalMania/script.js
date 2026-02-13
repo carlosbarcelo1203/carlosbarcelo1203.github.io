@@ -603,7 +603,7 @@
   }
 
   function buildDateKey(year, month, day) {
-    return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}a`;
   }
 
   function updateModeIndicator() {
