@@ -11,6 +11,9 @@
   const FLEX_COUNTUP_FORMAT_KEYS = new Set(["pageviews_30d", "max_speed_mph"]);
   const AUDIO_CRITERION_KEY = "sound_url";
   const AUDIO_PRIORITY_USAGE_MULTIPLIER = 0.7;
+  const DAILY_SHARE_WRONG_EMOJI = "\u274C";
+  const DAILY_SHARE_FALLBACK_EMOJI = "\u2B1C";
+  const DAILY_SHARE_GRID_COLUMNS = 8;
   const PACIFIC_TIME_ZONE = "America/Los_Angeles";
   const DAILY_RESET_HOUR_PT = 12;
   const STORAGE_KEY = "animal_game_progress_v1";
@@ -202,6 +205,7 @@
     menuContext: null,
     menuFeedbackTimer: null,
     dailyLastDefeatAnimalName: "",
+    dailyShareEmojiTokens: [],
     locked: false,
     allowAudioQuestions: true,
     currentRoundSoundUrl: "",
@@ -375,6 +379,7 @@
           normalizeWhitespace(row.scientific_name) ||
           `Animal ${index + 1}`,
         scientificName: normalizeWhitespace(row.scientific_name),
+        emoji: normalizeEmojiToken(row.emoji),
         wikipediaUrl: buildWikipediaUrl(row),
         imageUrl: normalizeWhitespace(row.image_url),
         mass_kg: parseNumeric(row.mass_kg),
@@ -755,7 +760,32 @@
   function buildDailyShareMessage() {
     const lostToAnimal = state.dailyLastDefeatAnimalName || "Unknown animal";
     const pageUrl = window.location.href;
-    return `On today's daily challenge, I got a streak of ${state.streak}, and I lost to ${lostToAnimal}. ${pageUrl}`;
+    const emojiGrid = buildDailyShareEmojiGrid();
+    const baseMessage = `On today's daily challenge, I got a streak of ${state.streak}, and I lost to ${lostToAnimal}.`;
+
+    if (!emojiGrid) {
+      return `${baseMessage}\n\n${pageUrl}`;
+    }
+
+    return `${baseMessage}\n\n${emojiGrid}\n\n${pageUrl}`;
+  }
+
+  function buildDailyShareEmojiGrid() {
+    if (!state.dailyShareEmojiTokens.length) {
+      return "";
+    }
+
+    const rows = [];
+    for (let index = 0; index < state.dailyShareEmojiTokens.length; index += DAILY_SHARE_GRID_COLUMNS) {
+      rows.push(state.dailyShareEmojiTokens.slice(index, index + DAILY_SHARE_GRID_COLUMNS).join(""));
+    }
+
+    return rows.join("\n");
+  }
+
+  function appendDailyShareEmojiToken(token) {
+    const normalizedToken = normalizeEmojiToken(token);
+    state.dailyShareEmojiTokens.push(normalizedToken || DAILY_SHARE_FALLBACK_EMOJI);
   }
 
   async function handleDailyShare() {
@@ -867,6 +897,7 @@
     state.winnerRunAnimalId = null;
     state.winnerRunCount = 0;
     state.dailyLastDefeatAnimalName = "";
+    state.dailyShareEmojiTokens = [];
     state.pendingCriterionKey = null;
     state.lastRenderedAnimalIds.left = null;
     state.lastRenderedAnimalIds.right = null;
@@ -914,6 +945,7 @@
     if (!guessedCorrect) {
       if (isDailyMode()) {
         state.dailyLastDefeatAnimalName = normalizeWhitespace(winnerAnimal.name);
+        appendDailyShareEmojiToken(DAILY_SHARE_WRONG_EMOJI);
       }
       ui.cards[side].classList.add("wrong");
       showLifeLossIndicator(side);
@@ -923,6 +955,9 @@
     const summary = buildRoundSummary(round);
 
     if (guessedCorrect) {
+      if (isDailyMode()) {
+        appendDailyShareEmojiToken(winnerAnimal.emoji);
+      }
       state.streak += 1;
       updateBestIfNeeded(state.streak);
       updateScoreboard();
@@ -2139,6 +2174,10 @@
     return String(value).replace(/\s+/g, " ").trim();
   }
 
+  function normalizeEmojiToken(value) {
+    return normalizeWhitespace(value);
+  }
+
   function buildWikipediaUrl(row) {
     const directUrl = normalizeWhitespace(row.source_url);
     if (isValidHttpUrl(directUrl)) {
@@ -2206,3 +2245,7 @@
     ui.errorMessage.classList.remove("hidden");
   }
 })();
+
+
+
+

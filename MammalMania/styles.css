@@ -1025,7 +1025,7 @@ h1 {
   }
 
   .animal-image {
-    object-fit: scale-down;
+    object-fit: stretch;
   }
 
   .card-body {
