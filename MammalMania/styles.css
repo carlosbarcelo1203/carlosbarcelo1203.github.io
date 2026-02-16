@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg-top: #f8f4e3;
   --bg-bottom: #cfe3c8;
   --panel: #fffdf7;
@@ -441,7 +441,7 @@ h1 {
 
 .image-frame {
   position: relative;
-  height: clamp(220px, 30vw, 320px);
+  height: clamp(250px, 33vw, 350px);
   background: linear-gradient(135deg, #e8dbba, #c8dcc0);
   overflow: hidden;
 }
@@ -517,33 +517,46 @@ h1 {
 
 .card-body {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 1rem 1rem 1.2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "name name"
+    "scientific learn";
+  align-items: center;
+  column-gap: 0.48rem;
+  row-gap: 0.18rem;
+  padding: 0.66rem 0.82rem 0.74rem;
 }
 
 .animal-name {
+  grid-area: name;
   margin: 0;
   font-size: clamp(1.2rem, 2.3vw, 1.65rem);
 }
 
 .animal-scientific {
+  grid-area: scientific;
+  min-width: 0;
   margin: 0;
   color: var(--muted);
   font-size: 0.95rem;
   font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .learn-more-button {
+  grid-area: learn;
   width: fit-content;
-  align-self: flex-end;
+  justify-self: end;
+  align-self: center;
   border: none;
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
-  padding: 0.5rem 0.95rem;
-  font-size: 0.85rem;
+  padding: 0.34rem 0.68rem;
+  font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
   transition:
@@ -907,11 +920,12 @@ h1 {
 
   #game-area:not(.hidden) {
     position: absolute;
-    inset: 2.65rem 0.5rem 0.45rem;
+    inset: calc(3.2rem + env(safe-area-inset-top)) 0.5rem 0.36rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0.42rem;
+    padding-top: 5rem;
   }
 
   .current-score-tile {
@@ -1015,13 +1029,13 @@ h1 {
   }
 
   .animal-card {
-    width: min(100%, 17rem);
+    width: min(100%, 18rem);
     min-height: 0;
     border-radius: 12px;
   }
 
   .image-frame {
-    height: clamp(150px, 15vh, 250px);
+    height: clamp(150px, 10vh, 180px);
   }
 
   .animal-image {
@@ -1029,21 +1043,22 @@ h1 {
   }
 
   .card-body {
-    gap: 0.1rem;
-    padding: 0.38rem 0.5rem 0.44rem;
+    column-gap: 0.34rem;
+    row-gap: 0.08rem;
+    padding: 0.34rem 0.46rem 0.38rem;
   }
 
   .animal-name {
-    font-size: clamp(0.95rem, 3.8vw, 1.1rem);
+    font-size: clamp(0.7rem, 3.8vw, 1rem);
   }
 
   .animal-scientific {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
   }
 
   .learn-more-button {
-    padding: 0.29rem 0.54rem;
-    font-size: 0.62rem;
+    padding: 0.2rem 0.44rem;
+    font-size: 0.58rem;
   }
 
   .animal-value {

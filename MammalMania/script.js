@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const DATA_FILE = "mammals2026.csv";
@@ -1764,7 +1764,7 @@
     highlightEl.className = "prompt-criterion";
     highlightEl.textContent = matchedText;
 
-    ui.prompt.append(beforeText.trimEnd(), document.createElement("br"), highlightEl, afterText);
+    ui.prompt.append(beforeText, highlightEl, afterText);
   }
 
   function populateCard(side, animal, criterion, shouldAnimate) {
@@ -2291,6 +2291,7 @@
     ui.errorMessage.classList.remove("hidden");
   }
 })();
+
 
 
 
