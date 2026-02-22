@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beatles Songdle</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <h1>Beatles Songdle</h1>
+        <p class="subtitle">
+          Guess today&apos;s Beatles song using title length, album, era, lead
+          vocal, tempo, and chart position clues.
+        </p>
+        <p id="daily-status" class="daily-status" aria-live="polite"></p>
+      </header>
+
+      <section class="controls" aria-label="Guess controls">
+        <form id="guess-form" class="guess-form" autocomplete="off">
+          <label for="guess-input">Guess a song</label>
+          <div class="guess-input-row">
+            <input
+              id="guess-input"
+              name="guess"
+              type="text"
+              placeholder="Start typing a Beatles song..."
+              autocomplete="off"
+              required
+            />
+          </div>
+          <p id="search-hint" class="search-hint" aria-live="polite"></p>
+          <div
+            id="suggestions-panel"
+            class="suggestions-panel hidden"
+            role="listbox"
+            aria-label="Song suggestions"
+          ></div>
+        </form>
+        <p id="message" class="message" aria-live="polite"></p>
+      </section>
+
+      <section class="results" aria-label="Guess results">
+        <h2 class="results-title">Category Rules</h2>
+        <div class="criteria-grid" aria-label="Category rules">
+          <article class="criteria-card">
+            <span class="criteria-name">Words in Title</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: exact match. Yellow: within 1 word."
+              aria-label="Words in Title rules: green for exact match; yellow for within one word."
+              >i</span
+            >
+          </article>
+          <article class="criteria-card">
+            <span class="criteria-name">Album</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: same album. Yellow: within 1 album chronologically. If either song is a single, yellow is disabled."
+              aria-label="Album rules: green for same album; yellow for within one album chronologically, except singles which only match in green."
+              >i</span
+            >
+          </article>
+          <article class="criteria-card">
+            <span class="criteria-name">Era</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: same era. Yellow: within 1 era chronologically."
+              aria-label="Era rules: green for same era; yellow for within one era chronologically."
+              >i</span
+            >
+          </article>
+          <article class="criteria-card">
+            <span class="criteria-name">Lead vocal</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: exact same vocalist set. Yellow: at least one vocalist overlaps."
+              aria-label="Lead vocal rules: green for exact same vocalist set; yellow when at least one vocalist overlaps."
+              >i</span
+            >
+          </article>
+          <article class="criteria-card">
+            <span class="criteria-name">Tempo</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: exact tempo bucket match. Yellow: not used."
+              aria-label="Tempo rules: green for exact tempo match; yellow is not used."
+              >i</span
+            >
+          </article>
+          <article class="criteria-card">
+            <span class="criteria-name">Chart Position</span>
+            <span
+              class="info-icon"
+              tabindex="0"
+              data-tooltip="Green: exact chart position. Yellow: within 20 positions."
+              aria-label="Chart position rules: green for exact position; yellow for within twenty positions."
+              >i</span
+            >
+          </article>
+        </div>
+        <h2 class="results-title">Guesses</h2>
+        <div id="results-body" class="guesses-list">
+          <p id="empty-state-row" class="empty-state-cell">
+            Choose a song from the dropdown to make your first guess.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
