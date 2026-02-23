@@ -4,17 +4,20 @@
   const DATA_FILE = "beatlesGrid.csv";
   const GRID_DIMENSION = 3;
   const MIN_INTERSECTION_MATCHES = 3;
-  const MAX_LAYOUT_ATTEMPTS = 250;
-  const MAX_REPAIR_STEPS = 80;
+  const MAX_LAYOUT_ATTEMPTS = 500;
+  const MAX_REPAIR_STEPS = 120;
   const MAX_SUGGESTIONS = 10;
   const MIN_QUERY_LENGTH = 1;
 
-  const ALWAYS_INCLUDED_CATEGORY_IDS = Object.freeze([
+  const NON_ALBUM_ERA_CATEGORY_IDS = Object.freeze([
     "titleStarts",
     "leadVocal",
     "chartPosition",
     "wordsInTitle",
-    "cover"
+    "titleHasAdjective",
+    "titleHasName",
+    "titleHasPunctuation",
+    "titleContainsWord"
   ]);
 
   const TITLE_START_OPTIONS = Object.freeze([
@@ -36,9 +39,14 @@
     { id: "no", label: "No" }
   ]);
 
-  const COVER_OPTIONS = Object.freeze([
-    { id: "yes", label: "Yes" },
-    { id: "no", label: "No" }
+  const BOOLEAN_CATEGORY_OPTIONS = Object.freeze([
+    { id: "yes", label: "" }
+  ]);
+
+  const TITLE_CONTAINS_WORD_OPTIONS = Object.freeze([
+    { id: "you", label: "you" },
+    { id: "the", label: "the" },
+    { id: "love", label: "love" }
   ]);
 
   const ALBUM_ORDER = Object.freeze([
@@ -90,9 +98,21 @@
       label: "Words in Title",
       matches: (song, criterionId) => song.wordsInTitle === Number.parseInt(criterionId, 10)
     }),
-    cover: Object.freeze({
-      label: "Cover",
-      matches: (song, criterionId) => (criterionId === "yes" ? song.isCover : !song.isCover)
+    titleHasAdjective: Object.freeze({
+      label: "Title contains an Adjective",
+      matches: (song, criterionId) => criterionId === "yes" && song.hasAdjectiveInTitle
+    }),
+    titleHasName: Object.freeze({
+      label: "Title contains a Name",
+      matches: (song, criterionId) => criterionId === "yes" && song.hasNameInTitle
+    }),
+    titleHasPunctuation: Object.freeze({
+      label: "Title contains Punctuation",
+      matches: (song, criterionId) => criterionId === "yes" && song.hasPunctuationInTitle
+    }),
+    titleContainsWord: Object.freeze({
+      label: "Title contains the word...",
+      matches: (song, criterionId) => song.titleWords.has(criterionId)
     })
   });
 
@@ -182,7 +202,7 @@
     const albumValues = uniqueOrdered(
       songs.map((song) => song.album),
       ALBUM_ORDER
-    );
+    ).filter((album) => album.toLowerCase() !== "single");
 
     const eraValues = uniqueOrdered(
       songs.map((song) => song.era),
@@ -217,7 +237,10 @@
         id: String(count),
         label: `${count} word${count === 1 ? "" : "s"}`
       })),
-      cover: COVER_OPTIONS.slice()
+      titleHasAdjective: BOOLEAN_CATEGORY_OPTIONS.slice(),
+      titleHasName: BOOLEAN_CATEGORY_OPTIONS.slice(),
+      titleHasPunctuation: BOOLEAN_CATEGORY_OPTIONS.slice(),
+      titleContainsWord: TITLE_CONTAINS_WORD_OPTIONS.slice()
     };
   }
 
@@ -340,9 +363,12 @@
   }
 
   function buildActiveCategoryIds() {
-    const ids = ALWAYS_INCLUDED_CATEGORY_IDS.slice();
-    ids.push(Math.random() < 0.5 ? "album" : "era");
-    return shuffle(ids);
+    const selectedCategoryIds = shuffle(NON_ALBUM_ERA_CATEGORY_IDS).slice(
+      0,
+      GRID_DIMENSION * 2 - 1
+    );
+    selectedCategoryIds.push(Math.random() < 0.5 ? "album" : "era");
+    return shuffle(selectedCategoryIds);
   }
 
   function evaluateBoard(
@@ -554,12 +580,16 @@
     category.className = "axis-category";
     category.textContent = CATEGORY_DEFINITIONS[categoryId].label;
 
-    const value = document.createElement("span");
-    value.className = "axis-value";
-    value.textContent = getCriterionLabel(categoryId, criterionId);
-
     card.appendChild(category);
-    card.appendChild(value);
+
+    const criterionLabel = getCriterionLabel(categoryId, criterionId);
+    if (criterionLabel) {
+      const value = document.createElement("span");
+      value.className = "axis-value";
+      value.textContent = criterionLabel;
+      card.appendChild(value);
+    }
+
     return card;
   }
 
@@ -818,43 +848,63 @@
   }
 
   function buildCellAriaLabel(cell) {
-    const rowLabel = `${CATEGORY_DEFINITIONS[cell.rowCategoryId].label}: ${getCriterionLabel(
+    const rowLabel = formatCategoryRuleLabel(
       cell.rowCategoryId,
       state.board.criteriaByCategory[cell.rowCategoryId]
-    )}`;
-    const colLabel = `${CATEGORY_DEFINITIONS[cell.colCategoryId].label}: ${getCriterionLabel(
+    );
+    const colLabel = formatCategoryRuleLabel(
       cell.colCategoryId,
       state.board.criteriaByCategory[cell.colCategoryId]
-    )}`;
+    );
     return `Guess a song for ${rowLabel} and ${colLabel}`;
   }
 
   function buildCellRuleText(cell) {
-    const columnLabel = `${CATEGORY_DEFINITIONS[cell.colCategoryId].label}: ${getCriterionLabel(
+    const columnLabel = formatCategoryRuleLabel(
       cell.colCategoryId,
       state.board.criteriaByCategory[cell.colCategoryId]
-    )}`;
-    const rowLabel = `${CATEGORY_DEFINITIONS[cell.rowCategoryId].label}: ${getCriterionLabel(
+    );
+    const rowLabel = formatCategoryRuleLabel(
       cell.rowCategoryId,
       state.board.criteriaByCategory[cell.rowCategoryId]
-    )}`;
+    );
     return `${columnLabel} x ${rowLabel}`;
   }
 
   function buildCellRuleLabel(cell) {
-    const rowLabel = `${CATEGORY_DEFINITIONS[cell.rowCategoryId].label} (${getCriterionLabel(
+    const rowLabel = formatCategoryRuleLabel(
       cell.rowCategoryId,
-      state.board.criteriaByCategory[cell.rowCategoryId]
-    )})`;
-    const colLabel = `${CATEGORY_DEFINITIONS[cell.colCategoryId].label} (${getCriterionLabel(
+      state.board.criteriaByCategory[cell.rowCategoryId],
+      true
+    );
+    const colLabel = formatCategoryRuleLabel(
       cell.colCategoryId,
-      state.board.criteriaByCategory[cell.colCategoryId]
-    )})`;
+      state.board.criteriaByCategory[cell.colCategoryId],
+      true
+    );
     return `${rowLabel} + ${colLabel}`;
   }
 
+  function formatCategoryRuleLabel(categoryId, criterionId, useParentheses = false) {
+    const categoryLabel = CATEGORY_DEFINITIONS[categoryId].label;
+    const criterionLabel = getCriterionLabel(categoryId, criterionId);
+    if (!criterionLabel) {
+      return categoryLabel;
+    }
+    return useParentheses
+      ? `${categoryLabel} (${criterionLabel})`
+      : `${categoryLabel}: ${criterionLabel}`;
+  }
+
   function getCriterionLabel(categoryId, criterionId) {
-    return state.optionLabelsByCategory?.[categoryId]?.[criterionId] || criterionId;
+    const categoryLabels = state.optionLabelsByCategory?.[categoryId];
+    if (!categoryLabels) {
+      return criterionId;
+    }
+    if (Object.prototype.hasOwnProperty.call(categoryLabels, criterionId)) {
+      return categoryLabels[criterionId];
+    }
+    return criterionId;
   }
 
   function setBoardMeta(text, type = "") {
@@ -882,7 +932,14 @@
       leadVocalists: parseLeadVocalists(leadVocalRaw),
       chartPositionBucket: categorizeChartPosition(chartPositionRaw),
       wordsInTitle,
-      isCover: parseCoverFlag(row.Cover),
+      hasAdjectiveInTitle: parseBooleanFlag(
+        row.Adjective || row["Title contains an Adjective"]
+      ),
+      hasNameInTitle: parseBooleanFlag(row.Names || row.Name || row["Title contains a Name"]),
+      hasPunctuationInTitle: parseBooleanFlag(
+        row.Punctuation || row["Title contains Punctuation"]
+      ),
+      titleWords: extractTitleWords(title),
       titleStartsBucket: categorizeTitleStart(title),
       imageUrl: resolveImageUrl(row)
     };
@@ -917,9 +974,14 @@
     return Array.from(unique);
   }
 
-  function parseCoverFlag(rawValue) {
+  function parseBooleanFlag(rawValue) {
     const cleaned = cleanText(rawValue).replace(/[\u200B-\u200D\uFEFF]/g, "");
     return cleaned === "1";
+  }
+
+  function extractTitleWords(title) {
+    const words = toTitleKey(title).match(/[a-z]+/g);
+    return new Set(words || []);
   }
 
   function categorizeChartPosition(rawValue) {
