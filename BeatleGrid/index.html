@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beatles Grid</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>Beatles Grid</h1>
+        <p class="subtitle">
+          Fill each square with a Beatles song matching both categories. The
+          board randomizes on every refresh.
+        </p>
+        <p class="meta" id="board-meta">Loading board...</p>
+        <p class="meta progress" id="progress-label" aria-live="polite"></p>
+      </header>
+
+      <section class="play-area" aria-label="Beatles trivia grid">
+        <div id="matrix-grid" class="matrix-grid"></div>
+      </section>
+    </main>
+
+    <div id="guess-overlay" class="guess-overlay hidden">
+      <div class="guess-dialog" role="dialog" aria-modal="true" aria-labelledby="overlay-rule">
+        <div class="guess-dialog-head">
+          <p id="overlay-rule" class="overlay-rule"></p>
+          <button id="overlay-close" class="overlay-close" type="button" aria-label="Close guess panel">
+            Close
+          </button>
+        </div>
+        <form id="overlay-form" class="overlay-form" autocomplete="off">
+          <div class="overlay-input-row">
+            <input
+              id="overlay-input"
+              type="text"
+              placeholder="Start typing a Beatles song..."
+              autocomplete="off"
+              aria-label="Guess song title"
+            />
+            <button class="overlay-submit" type="submit">Guess</button>
+          </div>
+          <div
+            id="overlay-suggestions"
+            class="overlay-suggestions hidden"
+            role="listbox"
+            aria-label="Song suggestions"
+          ></div>
+          <p id="overlay-feedback" class="overlay-feedback" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
