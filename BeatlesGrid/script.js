@@ -117,9 +117,12 @@
   });
 
   const ui = {
-    boardMeta: document.getElementById("board-meta"),
     progressLabel: document.getElementById("progress-label"),
+    giveUpButton: document.getElementById("give-up-button"),
     matrixGrid: document.getElementById("matrix-grid"),
+    postgamePanel: document.getElementById("postgame-panel"),
+    postgameTitle: document.getElementById("postgame-title"),
+    postgameMenus: document.getElementById("postgame-menus"),
     guessOverlay: document.getElementById("guess-overlay"),
     overlayRule: document.getElementById("overlay-rule"),
     overlayForm: document.getElementById("overlay-form"),
@@ -136,14 +139,19 @@
     optionLabelsByCategory: {},
     board: null,
     cellUiById: new Map(),
+    usedTitleKeys: new Set(),
+    gameOver: false,
     solvedCount: 0,
     activeCellId: ""
   };
 
+  if (ui.giveUpButton) {
+    ui.giveUpButton.disabled = true;
+  }
+
   init();
 
   async function init() {
-    setBoardMeta("Loading board...");
     ui.progressLabel.textContent = "";
 
     try {
@@ -166,18 +174,15 @@
       renderBoard(state.board);
       wireGlobalEvents();
       updateProgressLabel();
-
-      const usingAlbum = state.board.activeCategoryIds.includes("album");
-      setBoardMeta(
-        `Board ready. Using ${usingAlbum ? "Album" : "Era"} (not both). Refresh for a new random grid.`
-      );
     } catch (error) {
-      setBoardMeta(`Could not build the board: ${error.message}`, "error");
     }
   }
 
   function wireGlobalEvents() {
     ui.overlayForm.addEventListener("submit", onOverlaySubmit);
+    if (ui.giveUpButton) {
+      ui.giveUpButton.addEventListener("click", onGiveUpButtonClick);
+    }
 
     ui.overlayInput.addEventListener("input", onOverlayInputChanged);
     ui.overlayInput.addEventListener("focus", onOverlayInputChanged);
@@ -288,6 +293,18 @@
             true
           );
 
+          if (!hasDistinctSongAssignment(solvedEvaluation.cells)) {
+            const changedCriterion = mutateRandomCriterion(
+              activeCategoryIds,
+              criteriaByCategory,
+              categoryOptionsById
+            );
+            if (!changedCriterion) {
+              break;
+            }
+            continue;
+          }
+
           const cellMatrix = Array.from({ length: GRID_DIMENSION }, () =>
             Array.from({ length: GRID_DIMENSION })
           );
@@ -298,6 +315,7 @@
             const cell = {
               ...rawCell,
               validTitleKeys: new Set(rawCell.matches.map((song) => song.titleKey)),
+              validGuessTitles: extractValidGuessTitles(rawCell.matches),
               solved: false,
               solvedSong: null
             };
@@ -342,17 +360,14 @@
           const mutableCategoryIds = rankedCategoryIds.length
             ? rankedCategoryIds
             : activeCategoryIds;
-          const randomCategoryId = randomChoice(mutableCategoryIds);
-          const currentCriterion = criteriaByCategory[randomCategoryId];
-          const alternatives = categoryOptionsById[randomCategoryId]
-            .map((option) => option.id)
-            .filter((optionId) => optionId !== currentCriterion);
-
-          if (alternatives.length === 0) {
+          const didMutate = mutateRandomCriterion(
+            mutableCategoryIds,
+            criteriaByCategory,
+            categoryOptionsById
+          );
+          if (!didMutate) {
             break;
           }
-
-          criteriaByCategory[randomCategoryId] = randomChoice(alternatives);
         }
       }
     }
@@ -534,10 +549,83 @@
     );
   }
 
+  function hasDistinctSongAssignment(cells) {
+    const titleKeyIndexByValue = new Map();
+    const edgesByCellIndex = [];
+
+    for (const cell of cells) {
+      const songIndexes = [];
+      for (const song of cell.matches || []) {
+        let songIndex = titleKeyIndexByValue.get(song.titleKey);
+        if (songIndex === undefined) {
+          songIndex = titleKeyIndexByValue.size;
+          titleKeyIndexByValue.set(song.titleKey, songIndex);
+        }
+        songIndexes.push(songIndex);
+      }
+      edgesByCellIndex.push(songIndexes);
+    }
+
+    const matchedCellBySongIndex = new Array(titleKeyIndexByValue.size).fill(-1);
+
+    function tryAssign(cellIndex, visitedSongIndexes) {
+      const songIndexes = edgesByCellIndex[cellIndex];
+      for (const songIndex of songIndexes) {
+        if (visitedSongIndexes[songIndex]) {
+          continue;
+        }
+        visitedSongIndexes[songIndex] = true;
+
+        const matchedCellIndex = matchedCellBySongIndex[songIndex];
+        if (matchedCellIndex === -1 || tryAssign(matchedCellIndex, visitedSongIndexes)) {
+          matchedCellBySongIndex[songIndex] = cellIndex;
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    let assignedCellCount = 0;
+    const orderedCellIndexes = edgesByCellIndex
+      .map((songIndexes, index) => ({ index, count: songIndexes.length }))
+      .sort((a, b) => a.count - b.count);
+
+    for (const entry of orderedCellIndexes) {
+      const visitedSongIndexes = new Array(titleKeyIndexByValue.size).fill(false);
+      if (tryAssign(entry.index, visitedSongIndexes)) {
+        assignedCellCount += 1;
+      }
+    }
+
+    return assignedCellCount === cells.length;
+  }
+
+  function mutateRandomCriterion(candidateCategoryIds, criteriaByCategory, categoryOptionsById) {
+    const shuffledCategoryIds = shuffle(candidateCategoryIds);
+    for (const categoryId of shuffledCategoryIds) {
+      const currentCriterion = criteriaByCategory[categoryId];
+      const alternatives = (categoryOptionsById[categoryId] || [])
+        .map((option) => option.id)
+        .filter((optionId) => optionId !== currentCriterion);
+      if (alternatives.length === 0) {
+        continue;
+      }
+      criteriaByCategory[categoryId] = randomChoice(alternatives);
+      return true;
+    }
+    return false;
+  }
+
   function renderBoard(board) {
     ui.matrixGrid.replaceChildren();
     state.cellUiById.clear();
+    state.usedTitleKeys.clear();
+    state.gameOver = false;
+    state.solvedCount = 0;
     state.activeCellId = "";
+    setGiveUpButtonEnabled(true);
+    hidePostgamePanel();
     hideOverlaySuggestions();
     clearOverlayFeedback();
     closeGuessOverlay();
@@ -618,6 +706,10 @@
   }
 
   function openGuessOverlay(cellId) {
+    if (state.gameOver) {
+      return;
+    }
+
     const cell = state.board?.cellsById.get(cellId);
     if (!cell || cell.solved) {
       return;
@@ -736,6 +828,9 @@
       if (!song.titleKey.includes(query)) {
         continue;
       }
+      if (state.usedTitleKeys.has(song.titleKey)) {
+        continue;
+      }
       matches.push(song);
     }
 
@@ -752,6 +847,10 @@
   }
 
   function submitActiveCellGuess(rawInput) {
+    if (state.gameOver) {
+      return;
+    }
+
     const cellId = state.activeCellId;
     if (!cellId) {
       return;
@@ -778,6 +877,11 @@
     ui.overlayInput.value = song.title;
     hideOverlaySuggestions();
 
+    if (state.usedTitleKeys.has(song.titleKey)) {
+      setOverlayFeedback("That song is already used in another square.", "error");
+      return;
+    }
+
     if (!cell.validTitleKeys.has(song.titleKey)) {
       setOverlayFeedback(`No match for ${buildCellRuleLabel(cell)}.`, "error");
       return;
@@ -785,6 +889,7 @@
 
     cell.solved = true;
     cell.solvedSong = song;
+    state.usedTitleKeys.add(song.titleKey);
     state.solvedCount += 1;
     renderSolvedCell(cellId, song);
     updateProgressLabel();
@@ -838,13 +943,108 @@
   }
 
   function updateProgressLabel() {
-    ui.progressLabel.textContent = `${state.solvedCount} / ${
-      GRID_DIMENSION * GRID_DIMENSION
-    } solved`;
+    ui.progressLabel.textContent = `${state.solvedCount} / ${GRID_DIMENSION * GRID_DIMENSION
+      } solved`;
 
-    if (state.solvedCount === GRID_DIMENSION * GRID_DIMENSION) {
-      setBoardMeta("Grid complete. Refresh for a new random board.", "success");
+    if (!state.gameOver && state.solvedCount === GRID_DIMENSION * GRID_DIMENSION) {
+      finishGame("completed");
     }
+  }
+
+  function onGiveUpButtonClick() {
+    if (state.gameOver) {
+      return;
+    }
+    finishGame("gaveUp", true);
+  }
+
+  function finishGame(reason, expandDropdowns = false) {
+    if (state.gameOver) {
+      return;
+    }
+
+    state.gameOver = true;
+    lockRemainingCells();
+    closeGuessOverlay();
+    setGiveUpButtonEnabled(false);
+    showPostgamePanel(reason, expandDropdowns);
+  }
+
+  function lockRemainingCells() {
+    for (const [, cellUi] of state.cellUiById.entries()) {
+      cellUi.hitbox.disabled = true;
+      cellUi.wrapper.classList.remove("matrix-cell-active");
+      cellUi.wrapper.classList.add("matrix-cell-locked");
+    }
+  }
+
+  function showPostgamePanel(reason, expandDropdowns = false) {
+    if (!state.board) {
+      return;
+    }
+
+    ui.postgameTitle.textContent = reason === "gaveUp"
+      ? "You gave up. Open a square to see every valid guess."
+      : "Grid complete. Open a square to see every valid guess.";
+
+    const cells = state.board.cells
+      .slice()
+      .sort((left, right) => (left.rowIndex - right.rowIndex) || (left.colIndex - right.colIndex));
+    const fragment = document.createDocumentFragment();
+
+    for (const cell of cells) {
+      fragment.appendChild(buildPostgameDropdown(cell, expandDropdowns));
+    }
+
+    ui.postgameMenus.replaceChildren(fragment);
+    ui.postgamePanel.classList.remove("hidden");
+  }
+
+  function hidePostgamePanel() {
+    ui.postgameMenus.replaceChildren();
+    ui.postgamePanel.classList.add("hidden");
+    ui.postgameTitle.textContent = "";
+  }
+
+  function setGiveUpButtonEnabled(enabled) {
+    if (!ui.giveUpButton) {
+      return;
+    }
+    ui.giveUpButton.disabled = !enabled;
+  }
+
+  function buildPostgameDropdown(cell, expand = false) {
+    const validGuessTitles = Array.isArray(cell.validGuessTitles)
+      ? cell.validGuessTitles
+      : extractValidGuessTitles(cell.matches);
+
+    const details = document.createElement("details");
+    details.className = "postgame-dropdown";
+    if (expand) {
+      details.open = true;
+    }
+
+    const summary = document.createElement("summary");
+    summary.className = "postgame-dropdown-button";
+    summary.textContent =
+      `R${cell.rowIndex + 1}C${cell.colIndex + 1} - ${validGuessTitles.length} valid`;
+    details.appendChild(summary);
+
+    const rule = document.createElement("p");
+    rule.className = "postgame-rule";
+    rule.textContent = buildCellRuleText(cell);
+    details.appendChild(rule);
+
+    const list = document.createElement("ul");
+    list.className = "postgame-guess-list";
+    for (const title of validGuessTitles) {
+      const item = document.createElement("li");
+      item.textContent = title;
+      list.appendChild(item);
+    }
+    details.appendChild(list);
+
+    return details;
   }
 
   function buildCellAriaLabel(cell) {
@@ -907,9 +1107,17 @@
     return criterionId;
   }
 
-  function setBoardMeta(text, type = "") {
-    ui.boardMeta.textContent = text;
-    ui.boardMeta.className = type ? `meta ${type}` : "meta";
+  function extractValidGuessTitles(songs) {
+    const byTitleKey = new Map();
+    for (const song of songs || []) {
+      if (!song?.titleKey || !song.title) {
+        continue;
+      }
+      if (!byTitleKey.has(song.titleKey)) {
+        byTitleKey.set(song.titleKey, song.title);
+      }
+    }
+    return Array.from(byTitleKey.values()).sort((left, right) => left.localeCompare(right));
   }
 
   function normalizeSong(row) {

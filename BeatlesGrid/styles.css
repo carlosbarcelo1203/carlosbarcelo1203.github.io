@@ -76,12 +76,103 @@ body {
   font-weight: 700;
 }
 
+.game-actions {
+  margin-top: 0.65rem;
+  display: flex;
+  justify-content: center;
+}
+
+.give-up-button {
+  border: 1px solid #253543;
+  border-radius: 8px;
+  background: #f2f6f9;
+  color: #15222e;
+  min-height: 40px;
+  padding: 0.45rem 0.95rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.give-up-button:hover,
+.give-up-button:focus-visible {
+  background: #e4edf3;
+  outline: none;
+}
+
+.give-up-button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
 .play-area {
   margin-top: 1.25rem;
   display: flex;
   justify-content: center;
   overflow-x: auto;
   padding-bottom: 0.4rem;
+}
+
+.postgame-panel {
+  margin: 1rem auto 0;
+  width: min(980px, 100%);
+  border: 1px solid #bec8d1;
+  border-radius: 12px;
+  background: #f9fbfc;
+  padding: 0.8rem;
+}
+
+.postgame-title {
+  margin: 0 0 0.7rem;
+  font-weight: 700;
+  color: #1a2731;
+}
+
+.postgame-menus {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+}
+
+.postgame-dropdown {
+  border: 1px solid #c6d1da;
+  border-radius: 9px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.postgame-dropdown-button {
+  list-style: none;
+  padding: 0.55rem 0.62rem;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-size: 1.03rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  cursor: pointer;
+}
+
+.postgame-dropdown-button::-webkit-details-marker {
+  display: none;
+}
+
+.postgame-rule {
+  margin: 0;
+  padding: 0 0.62rem 0.45rem;
+  color: #2a3c4c;
+  font-size: 0.82rem;
+}
+
+.postgame-guess-list {
+  margin: 0;
+  padding: 0 0.62rem 0.65rem 1.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.postgame-guess-list li {
+  margin: 0.16rem 0;
+  line-height: 1.2;
 }
 
 .matrix-grid {
@@ -179,6 +270,17 @@ body {
 
 .matrix-cell-active .cell-hitbox {
   box-shadow: inset 0 0 0 3px rgba(20, 45, 56, 0.22);
+}
+
+.matrix-cell-locked .cell-hitbox {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.matrix-cell-locked .cell-hitbox:hover,
+.matrix-cell-locked .cell-hitbox:focus-visible {
+  background: var(--cell);
+  box-shadow: none;
 }
 
 .matrix-cell-solved {
@@ -390,6 +492,14 @@ body {
     padding: 0.8rem 0.55rem 1.6rem;
   }
 
+  .postgame-panel {
+    padding: 0.66rem;
+  }
+
+  .postgame-menus {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  }
+
   .matrix-grid {
     min-width: 650px;
     grid-template-columns: minmax(128px, 170px) repeat(3, minmax(140px, 180px));
@@ -407,6 +517,19 @@ body {
 }
 
 @media (max-width: 660px) {
+  .give-up-button {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .postgame-menus {
+    grid-template-columns: 1fr;
+  }
+
+  .postgame-guess-list {
+    max-height: 176px;
+  }
+
   .guess-overlay {
     padding-top: 2.1rem;
   }

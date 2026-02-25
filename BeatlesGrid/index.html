@@ -10,24 +10,43 @@
     <main class="app">
       <header class="hero">
         <h1>Beatles Grid</h1>
-        <p class="subtitle">
-          Fill each square with a Beatles song matching both categories. The
-          board randomizes on every refresh.
-        </p>
-        <p class="meta" id="board-meta">Loading board...</p>
         <p class="meta progress" id="progress-label" aria-live="polite"></p>
       </header>
 
       <section class="play-area" aria-label="Beatles trivia grid">
         <div id="matrix-grid" class="matrix-grid"></div>
       </section>
+      <section
+        id="postgame-panel"
+        class="postgame-panel hidden"
+        aria-live="polite"
+      >
+        <p id="postgame-title" class="postgame-title"></p>
+        <div id="postgame-menus" class="postgame-menus"></div>
+      </section>
+
+      <div class="game-actions">
+        <button id="give-up-button" class="give-up-button" type="button">
+          Give up
+        </button>
+      </div>
     </main>
 
     <div id="guess-overlay" class="guess-overlay hidden">
-      <div class="guess-dialog" role="dialog" aria-modal="true" aria-labelledby="overlay-rule">
+      <div
+        class="guess-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="overlay-rule"
+      >
         <div class="guess-dialog-head">
           <p id="overlay-rule" class="overlay-rule"></p>
-          <button id="overlay-close" class="overlay-close" type="button" aria-label="Close guess panel">
+          <button
+            id="overlay-close"
+            class="overlay-close"
+            type="button"
+            aria-label="Close guess panel"
+          >
             Close
           </button>
         </div>
@@ -48,7 +67,11 @@
             role="listbox"
             aria-label="Song suggestions"
           ></div>
-          <p id="overlay-feedback" class="overlay-feedback" aria-live="polite"></p>
+          <p
+            id="overlay-feedback"
+            class="overlay-feedback"
+            aria-live="polite"
+          ></p>
         </form>
       </div>
     </div>
