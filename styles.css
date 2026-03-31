@@ -106,10 +106,10 @@ img {
 main {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 80px var(--gutter) 120px;
+  padding: 64px var(--gutter) 120px;
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 76px;
 }
 
 section {
@@ -118,13 +118,12 @@ section {
 
 .hero__grid {
   display: grid;
-  gap: 32px;
-  align-items: center;
+  gap: 20px;
+  justify-items: start;
 }
 
-.hero__portrait {
-  display: flex;
-  justify-content: flex-end;
+.hero__copy {
+  max-width: 760px;
 }
 
 .media--portrait {
@@ -153,8 +152,9 @@ h3 {
   margin: 0 0 16px;
 }
 
-h1 {
-  font-size: clamp(2.6rem, 4.8vw, 4.4rem);
+.hero h1 {
+  font-size: clamp(2.35rem, 4.2vw, 4rem);
+  margin-bottom: 12px;
 }
 
 h2 {
@@ -166,18 +166,23 @@ h3 {
 }
 
 .hero__lead {
-  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
   color: var(--muted);
-  max-width: 580px;
+  max-width: 620px;
+  margin: 0;
 }
 
 .hero__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 20px;
+  gap: 10px 18px;
   color: var(--muted);
-  font-size: 0.95rem;
-  margin: 24px 0 32px;
+  font-size: 0.9rem;
+  margin: 16px 0 22px;
+}
+
+.hero .cta-group {
+  gap: 12px;
 }
 
 .cta-group {
@@ -529,11 +534,25 @@ h3 {
   flex-wrap: wrap;
 }
 
+.contact {
+  display: grid;
+  gap: 24px;
+}
+
 .contact__actions {
   display: flex;
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
+}
+
+.contact__portrait {
+  display: flex;
+  justify-content: center;
+}
+
+.contact__portrait .media--portrait {
+  width: clamp(180px, 30vw, 260px);
 }
 
 .contact__phone {
@@ -562,10 +581,6 @@ h3 {
 }
 
 @media (min-width: 900px) {
-  .hero__grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.6fr);
-  }
-
   .project {
     grid-template-columns: 1.1fr 0.9fr;
   }
@@ -591,7 +606,7 @@ h3 {
   }
 
   main {
-    padding-top: 50px;
+    padding-top: 42px;
   }
 }
 
